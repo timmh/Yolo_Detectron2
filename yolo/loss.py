@@ -215,7 +215,7 @@ class ComputeLoss(object):
                 classes = torch.unsqueeze(gt_per_image.gt_classes.clone(), dim=1)
                 t = torch.cat([torch.ones_like(classes)*i, classes, boxes], dim=1)
                 targets.append(t)
-        targets = torch.cat(targets, 0)
+        targets = torch.cat(targets, 0) if len(targets) > 0 else torch.empty((0, 6), dtype=torch.float32, device=p[0].device)
 
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
         tcls, tbox, indices, anch = [], [], [], []
@@ -224,7 +224,7 @@ class ComputeLoss(object):
         ai = torch.arange(na, device=targets.device).float().view(
             na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
         # append anchor indices
-        targets = torch.cat((targets.repeat(na, 1, 1), ai[:, :, None]), 2)
+        targets = torch.cat((targets.repeat(na, 1, 1), ai[:, :, None]), 2) if len(targets) > 0 else torch.empty((na, 0, targets.shape[-1] + 1), dtype=torch.float32, device=p[0].device)
 
         g = 0.5  # bias
         off = torch.tensor([[0, 0],
