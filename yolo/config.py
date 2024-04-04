@@ -5,7 +5,7 @@ def add_yolo_config(cfg):
     cfg.MODEL.YAML = "yolov5m.yaml"
     cfg.MODEL.YOLO = CN()
     cfg.MODEL.YOLO.NORM = "BN"
-    cfg.MODEL.YOLO.ACTIVATION = "nn.LeakyReLU"
+    cfg.MODEL.YOLO.ACTIVATION = "nn.SiLU"
     cfg.MODEL.YOLO.FOCAL_LOSS_GAMMA = 0.0
     cfg.MODEL.YOLO.BOX_LOSS_GAIN = 0.05
     cfg.MODEL.YOLO.CLS_LOSS_GAIN = 0.3

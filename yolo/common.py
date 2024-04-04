@@ -23,10 +23,10 @@ def DWConv(c1, c2, k=1, s=1, **kwargs):
 class Conv(CNNBlockBase):
     # Standard convolution
     # ch_in, ch_out, kernel, stride, padding, groups
-    def __init__(self, c1, c2, k=1, s=1, p=None, g=1, norm="BN", act=nn.LeakyReLU):
+    def __init__(self, c1, c2, k=1, s=1, p=None, g=1, norm="BN", act=nn.SiLU):
         super(Conv, self).__init__(in_channels=c1, out_channels=c2, stride=s)
-        if isinstance(act, nn.LeakyReLU):
-            act = nn.LeakyReLU(0.1)
+        if isinstance(act, nn.LeakyReLU) or act == nn.LeakyReLU:
+            act = nn.LeakyReLU(negative_slope=0.1, inplace=True)
         else:
             act = act()
         norm = get_norm(norm, c2)

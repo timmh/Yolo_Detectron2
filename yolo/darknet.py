@@ -12,7 +12,7 @@ from .general import make_divisible
 
 class DarkNet(Backbone):
 
-    def __init__(self, cfg, ch=3, norm="BN", activation="nn.LeakyReLU"):
+    def __init__(self, cfg, ch=3, norm="BN", activation="nn.SiLU"):
         super().__init__()
         self.yaml = cfg
         ch = self.yaml['ch'] = self.yaml.get('ch', ch)  # input channels
@@ -24,7 +24,10 @@ class DarkNet(Backbone):
         self.out_features = -1
         self.out_feature_channels = {}
         self.out_feature_strides = {}
-        activation = eval(activation) if isinstance(activation, str) else activation
+        if activation == "nn.LeakyReLU":
+            activation = nn.LeakyReLU(negative_slope=0.1, inplace=True)
+        else:
+            activation = eval(activation) if isinstance(activation, str) else activation
         post_conv = {'norm': norm,
                      'act': activation}
         if 'Detect' in self.yaml['head'][-1]:
