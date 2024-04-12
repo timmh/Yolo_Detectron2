@@ -87,6 +87,13 @@ class DarkNet(Backbone):
         # Init weights, biases
         self.initialize_weights()
 
+        # TODO: infer this from self.model instead of hard-coding
+        self._size_divisibility = 32
+
+    @property
+    def size_divisibility(self):
+        return self._size_divisibility
+
     def forward(self, x):
         return self.forward_once(x)  # augmented inference, None
 
