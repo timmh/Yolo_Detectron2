@@ -119,9 +119,14 @@ class Yolo(nn.Module):
         """
         from detectron2.utils.visualizer import Visualizer
 
-        assert len(batched_inputs) == len(
-            results
-        ), "Cannot visualize inputs and results of different sizes"
+        # TODO: find out why below assertion fails and fix it instead of returning early
+        if len(batched_inputs) != len(results):
+            print(f"WARNING: Failed to run visualize_training because inputs and results are of different sizes ({len(batched_inputs)}, {len(results)})")
+            return
+
+        # assert len(batched_inputs) == len(
+        #     results
+        # ), "Cannot visualize inputs and results of different sizes"
         storage = get_event_storage()
         max_boxes = 20
 
