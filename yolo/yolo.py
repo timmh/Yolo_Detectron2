@@ -190,7 +190,7 @@ class Yolo(nn.Module):
             assert "instances" in batched_inputs[0], "Instance annotations are missing in training!"
             gt_instances = [x["instances"].to(self.device) for x in batched_inputs]
 
-            losses = self.loss(pred, gt_instances)
+            losses = self.loss(pred, gt_instances, images)
 
             if self.vis_period > 0:
                 storage = get_event_storage()

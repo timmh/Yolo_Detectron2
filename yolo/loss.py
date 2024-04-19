@@ -125,13 +125,13 @@ class ComputeLoss(object):
         if self.autobalance:
             self.ssi = list(stride).index(16)
 
-    def __call__(self, p, instances):  # predictions, targets, model is ignored
+    def __call__(self, p, instances, images):  # predictions, targets, model is ignored
         device = instances[0].gt_boxes.device
         self.to(device)
         lcls, lbox, lobj = torch.zeros(1, device=device), torch.zeros(
             1, device=device), torch.zeros(1, device=device)
         tcls, tbox, indices, anchors = self.build_targets(
-            p, instances)  # targets
+            p, instances, images)  # targets
 
         # Losses
         for i, pi in enumerate(p):  # layer index, layer predictions
@@ -191,7 +191,7 @@ class ComputeLoss(object):
             "loss_cls": lcls,
         }
 
-    def build_targets(self, p, gt_instances):
+    def build_targets(self, p, gt_instances, images):
         """
         Args:
             p (list[Tensors]): A list of #feature level predictions
@@ -201,13 +201,13 @@ class ComputeLoss(object):
         """
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
         targets = []
-        for i, gt_per_image in enumerate(gt_instances):
+        for i, (gt_per_image, image) in enumerate(zip(gt_instances, images.tensor)):
             # Convert the boxes to target format of shape [sum(nL per image), 6]
             # where each target entry is [img_index, class, x, y, w, h],
             # x, y, w, h - relative and x, y are centers
             if len(gt_per_image) > 0:
                 boxes = gt_per_image.gt_boxes.tensor.clone()
-                h, w = gt_per_image.image_size
+                h, w = image.shape[1], image.shape[2]
                 boxes[:, 0:2] = (boxes[:, 0:2] + boxes[:, 2:4]) / 2
                 boxes[:, 2:4] = (boxes[:, 2:4] - boxes[:, 0:2]) * 2
                 boxes[:, ::2] /= float(w)
