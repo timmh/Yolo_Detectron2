@@ -1,8 +1,6 @@
 MODEL:
   META_ARCHITECTURE: Yolo
-  YAML: yolov5m.yaml
-  BACKBONE:
-    NAME: build_darknet_backbone
+  YAML: yolov5://yolov5m.yaml
   YOLO:
     FOCAL_LOSS_GAMMA: 0.0
     BOX_LOSS_GAIN: 0.05
@@ -14,6 +12,7 @@ MODEL:
     ANCHOR_T: 4.0
     CONF_THRESH: 0.001
     IOU_THRES: 0.65
+    NUM_CLASSES: 8
   PIXEL_MEAN: [0.0, 0.0, 0.0]
   PIXEL_STD: [255.0, 255.0, 255.0]
 SOLVER:
@@ -27,24 +26,6 @@ SOLVER:
   WARMUP_ITERS: 10000
   MAX_ITER: 200000
   IMS_PER_BATCH: 16
-INPUT:  # Uses Yolo's own transforms
-  SIZE: 416
-  HSV_H: 0.015
-  HSV_S: 0.7
-  HSV_V: 0.4
-  DEGREES: 0.0
-  TRANSLATE: 0.1
-  SCALE: 0.5
-  SHEAR: 0.0
-  PERSPECTIVE: 0.0
-  FLIPUD: 0.0
-  FLIPLR: 0.5
-  MOSAIC: 1.0   # IGNORED
-  MIXUP: 0.0
-  FORMAT: BGR
-OUTPUT_DIR: ./outputs/exp
-TEST:
-  AUG:
-    SIZE: 416
-    FLIP: False
-  EVAL_PERIOD: 4000
+INPUT:
+  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800)  # same as detectron2/configs/Base-RCNN-FPN.yaml
+  FORMAT: RGB

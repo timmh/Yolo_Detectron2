@@ -16,8 +16,9 @@ def add_yolo_config(cfg):
     cfg.MODEL.YOLO.ANCHOR_T = 4.0
     cfg.MODEL.YOLO.CONF_THRESH = 0.001
     cfg.MODEL.YOLO.IOU_THRES = 0.65
-    cfg.MODEL.PIXEL_MEAN: [0.0, 0.0, 0.0]
-    cfg.MODEL.PIXEL_STD: [255.0, 255.0, 255.0]
+    cfg.MODEL.YOLO.NUM_CLASSES = 80
+    cfg.MODEL.PIXEL_MEAN = [0.0, 0.0, 0.0]
+    cfg.MODEL.PIXEL_STD = [255.0, 255.0, 255.0]
     cfg.SOLVER.BASE_LR = 0.001
     cfg.SOLVER.MOMENTUM = 0.937
     cfg.SOLVER.NESTEROV = True
@@ -27,18 +28,4 @@ def add_yolo_config(cfg):
     cfg.SOLVER.LR_SCHEDULER_NAME = "WarmupCosineLR"
     cfg.SOLVER.WARMUP_ITERS = 1000
     cfg.SOLVER.IMS_PER_BATCH = 16
-    cfg.INPUT.SIZE = 416
-    cfg.INPUT.HSV_H = 0.015
-    cfg.INPUT.HSV_S = 0.7
-    cfg.INPUT.HSV_V = 0.4
-    cfg.INPUT.DEGREES = 0.0
-    cfg.INPUT.TRANSLATE = 0.1
-    cfg.INPUT.SCALE = 0.5
-    cfg.INPUT.SHEAR = 0.0
-    cfg.INPUT.PERSPECTIVE = 0.0
-    cfg.INPUT.FLIPUD = 0.0
-    cfg.INPUT.FLIPLR = 0.5
-    cfg.INPUT.MOSAIC = 1.0   # IGNORED
-    cfg.INPUT.MIXUP = 0.0
-    cfg.INPUT.FORMAT = "BGR"
-    cfg.TEST.AUG.SIZE = 416
+    cfg.INPUT.FORMAT = "RGB"

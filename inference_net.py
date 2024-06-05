@@ -12,7 +12,7 @@ from detectron2.data.detection_utils import read_image
 from detectron2.utils.logger import setup_logger
 from detectron2.utils.visualizer import ColorMode, Visualizer
 
-from yolo import add_yolo_config
+from yolo_detectron2 import add_yolo_config
 
 
 class Predictor(DefaultPredictor):

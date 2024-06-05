@@ -21,7 +21,7 @@ from detectron2.data import (
 from detectron2.evaluation import COCOEvaluator
 from detectron2.config import get_cfg
 
-from yolo import add_yolo_config, build_yolo_aug
+from yolo_detectron2 import add_yolo_config
 
 
 class Trainer(DefaultTrainer):
@@ -34,13 +34,12 @@ class Trainer(DefaultTrainer):
 
     @classmethod
     def build_train_loader(cls, cfg):
-        mapper = DatasetMapper(cfg, is_train=True, augmentations=build_yolo_aug(cfg))
+        mapper = DatasetMapper(cfg, is_train=True, augmentations=[])
         return build_detection_train_loader(cfg, mapper=mapper)
 
     @classmethod
     def build_test_loader(cls, cfg, dataset_name):
-        mapper = DatasetMapper(cfg, is_train=False,
-                               augmentations=build_yolo_aug(cfg, training=False))
+        mapper = DatasetMapper(cfg, is_train=False, augmentations=[])
         return build_detection_test_loader(cfg, dataset_name, mapper=mapper)
 
 
